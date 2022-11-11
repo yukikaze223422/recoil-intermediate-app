@@ -101,6 +101,7 @@ export const InputTodo = (props) => {
           <label>
             <p>詳細</p>
             <textarea
+              className="textarea"
               placeholder="詳細を入力"
               value={todoDetail}
               onChange={(e) => setTodoDetail(e.target.value)}

@@ -13,6 +13,9 @@
   margin: 10px auto;
 }
 
+.textarea {
+  resize: none;
+}
 /*TodoList.jsx */
 .todoListContainer {
   background-color: greenyellow;

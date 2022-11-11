@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../App.css";
-import Select from "react-select";
 
 export const TodoList = React.memo((props) => {
   const {
