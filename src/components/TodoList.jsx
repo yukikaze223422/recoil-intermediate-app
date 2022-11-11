@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { memo, useState, useRef } from "react";
 import "../App.css";
 
-export const TodoList = React.memo((props) => {
+export const TodoList = memo((props) => {
   const {
     setTodoTitle,
     setTodoDetail,
@@ -11,6 +11,8 @@ export const TodoList = React.memo((props) => {
     todoEdit,
     setTodoEdit,
   } = props;
+
+  const dropdownRef = useRef();
 
   const [radio, setRadio] = useState("all");
   const [filteredTodoList, setFilteredTodoList] = useState([]);
@@ -46,6 +48,7 @@ export const TodoList = React.memo((props) => {
       );
       setFilteredTodoList(completeTodoList);
     }
+    console.log(filteredTodoList);
     return;
   };
 
@@ -58,8 +61,7 @@ export const TodoList = React.memo((props) => {
     } else if (e.target.value === "complete") {
       switchTodoList[id - 1].status = "完了";
     }
-    console.log(switchTodoList);
-    //setTodoList(switchTodoList);
+    console.log(filteredTodoList);
   };
 
   return (
@@ -117,9 +119,15 @@ export const TodoList = React.memo((props) => {
                   name="status"
                   onChange={(e) => onClickSwitch(e, list.id)}
                 >
-                  <option value="not">未着手</option>
-                  <option value="start">進行中</option>
-                  <option value="complete">完了</option>
+                  <option value="not" selected={list.status === "未着手"}>
+                    未着手
+                  </option>
+                  <option value="start" selected={list.status === "進行中"}>
+                    進行中
+                  </option>
+                  <option value="complete" selected={list.status === "完了"}>
+                    完了
+                  </option>
                 </select>
                 {!todoEdit ? (
                   <>
@@ -159,9 +167,15 @@ export const TodoList = React.memo((props) => {
                   name="status"
                   onChange={(e) => onClickSwitch(e, list.id)}
                 >
-                  <option value="not">未着手</option>
-                  <option value="start">進行中</option>
-                  <option value="complete">完了</option>
+                  <option value="not" selected={list.status === "未着手"}>
+                    未着手
+                  </option>
+                  <option value="start" selected={list.status === "進行中"}>
+                    進行中
+                  </option>
+                  <option value="complete" selected={list.status === "完了"}>
+                    完了
+                  </option>
                 </select>
                 {!todoEdit ? (
                   <>
