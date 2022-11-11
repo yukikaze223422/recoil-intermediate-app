@@ -115,22 +115,25 @@ export const TodoList = memo((props) => {
                   {list.id}:{list.title}
                 </p>
                 <p>{list.detail}</p>
-                <select
-                  name="status"
-                  onChange={(e) => onClickSwitch(e, list.id)}
-                >
-                  <option value="not" selected={list.status === "未着手"}>
-                    未着手
-                  </option>
-                  <option value="start" selected={list.status === "進行中"}>
-                    進行中
-                  </option>
-                  <option value="complete" selected={list.status === "完了"}>
-                    完了
-                  </option>
-                </select>
                 {!todoEdit ? (
                   <>
+                    <select
+                      name="status"
+                      onChange={(e) => onClickSwitch(e, list.id)}
+                    >
+                      <option value="not" selected={list.status === "未着手"}>
+                        未着手
+                      </option>
+                      <option value="start" selected={list.status === "進行中"}>
+                        進行中
+                      </option>
+                      <option
+                        value="complete"
+                        selected={list.status === "完了"}
+                      >
+                        完了
+                      </option>
+                    </select>
                     <button
                       className="editButton"
                       type="button"
