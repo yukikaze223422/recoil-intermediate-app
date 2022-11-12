@@ -32,10 +32,10 @@ export const TodoList = memo((props) => {
   const handleChange = (e) => {
     setRadio(e.target.value);
     if (e.target.value === "not") {
-      const incompleteTodoList = [...todoList].filter(
+      const completeTodoList = [...todoList].filter(
         (todo) => todo.status === "not"
       );
-      setFilteredTodoList(incompleteTodoList);
+      setFilteredTodoList(completeTodoList);
     } else if (e.target.value === "start") {
       const completeTodoList = [...todoList].filter(
         (todo) => todo.status === "start"
@@ -59,6 +59,10 @@ export const TodoList = memo((props) => {
     } else if (e.target.value === "complete") {
       copyTodos[id - 1].status = "complete";
     }
+    const newTodos = filteredTodoList.filter(
+      (todo) => todo.status !== e.target.value
+    );
+    setFilteredTodoList(newTodos);
     setTodoList(copyTodos);
   };
 
