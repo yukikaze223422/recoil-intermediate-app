@@ -23,7 +23,7 @@ export const InputTodo = (props) => {
         id: todoId + 1,
         title: todoTitle,
         detail: todoDetail,
-        status: "未着手",
+        status: "not",
       },
     ];
     setTodoList(newTodo);

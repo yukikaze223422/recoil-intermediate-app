@@ -1,4 +1,4 @@
-import React, { memo, useState, useRef } from "react";
+import React, { memo, useState } from "react";
 import "../App.css";
 
 export const TodoList = memo((props) => {
@@ -11,8 +11,6 @@ export const TodoList = memo((props) => {
     todoEdit,
     setTodoEdit,
   } = props;
-
-  const dropdownRef = useRef();
 
   const [radio, setRadio] = useState("all");
   const [filteredTodoList, setFilteredTodoList] = useState([]);
@@ -34,34 +32,31 @@ export const TodoList = memo((props) => {
     setRadio(e.target.value);
     if (e.target.value === "not") {
       const incompleteTodoList = [...todoList].filter(
-        (todo) => todo.status === "未着手"
+        (todo) => todo.status === "not"
       );
       setFilteredTodoList(incompleteTodoList);
     } else if (e.target.value === "start") {
       const completeTodoList = [...todoList].filter(
-        (todo) => todo.status === "進行中"
+        (todo) => todo.status === "start"
       );
       setFilteredTodoList(completeTodoList);
     } else if (e.target.value === "complete") {
       const completeTodoList = [...todoList].filter(
-        (todo) => todo.status === "完了"
+        (todo) => todo.status === "complete"
       );
       setFilteredTodoList(completeTodoList);
     }
-    console.log(filteredTodoList);
     return;
   };
 
   const onClickSwitch = (e, id) => {
-    const switchTodoList = [...todoList];
     if (e.target.value === "not") {
-      switchTodoList[id - 1].status = "未着手";
+      todoList[id - 1].status = "not";
     } else if (e.target.value === "start") {
-      switchTodoList[id - 1].status = "進行中";
+      todoList[id - 1].status = "start";
     } else if (e.target.value === "complete") {
-      switchTodoList[id - 1].status = "完了";
+      todoList[id - 1].status = "complete";
     }
-    console.log(filteredTodoList);
   };
 
   return (
@@ -118,21 +113,12 @@ export const TodoList = memo((props) => {
                 {!todoEdit ? (
                   <>
                     <select
-                      name="status"
+                      value={todoList.status}
                       onChange={(e) => onClickSwitch(e, list.id)}
                     >
-                      <option value="not" selected={list.status === "未着手"}>
-                        未着手
-                      </option>
-                      <option value="start" selected={list.status === "進行中"}>
-                        進行中
-                      </option>
-                      <option
-                        value="complete"
-                        selected={list.status === "完了"}
-                      >
-                        完了
-                      </option>
+                      <option value="not">未着手</option>
+                      <option value="start">進行中</option>
+                      <option value="complete">完了</option>
                     </select>
                     <button
                       className="editButton"
@@ -169,21 +155,12 @@ export const TodoList = memo((props) => {
                 {!todoEdit ? (
                   <>
                     <select
-                      name="status"
+                      value={filteredTodoList.status}
                       onChange={(e) => onClickSwitch(e, list.id)}
                     >
-                      <option value="not" selected={list.status === "未着手"}>
-                        未着手
-                      </option>
-                      <option value="start" selected={list.status === "進行中"}>
-                        進行中
-                      </option>
-                      <option
-                        value="complete"
-                        selected={list.status === "完了"}
-                      >
-                        完了
-                      </option>
+                      <option value="not">未着手</option>
+                      <option value="start">進行中</option>
+                      <option value="complete">完了</option>
                     </select>
                     <button
                       className="editButton"
