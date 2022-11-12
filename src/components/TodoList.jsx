@@ -144,7 +144,13 @@ export const TodoList = memo((props) => {
                     </button>
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <select value={list.status} disabled={true}>
+                      <option value="not">未着手</option>
+                      <option value="start">進行中</option>
+                      <option value="complete">完了</option>
+                    </select>
+                  </>
                 )}
               </li>
             );
@@ -186,7 +192,13 @@ export const TodoList = memo((props) => {
                     </button>
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <select value={list.status} disabled={true}>
+                      <option value="not">未着手</option>
+                      <option value="start">進行中</option>
+                      <option value="complete">完了</option>
+                    </select>
+                  </>
                 )}
               </li>
             );
