@@ -17,8 +17,9 @@ export const TodoList = memo((props) => {
 
   const handleClickDelete = (id) => {
     const copyTodos = [...todoList];
-    const newTodos = copyTodos.splice(id, 1);
+    const newTodos = copyTodos.filter((todo) => id !== todo.id);
     setTodoList(newTodos);
+    setFilteredTodoList(newTodos);
   };
 
   const handleClickEdit = (id, title, detail) => {
@@ -50,13 +51,15 @@ export const TodoList = memo((props) => {
   };
 
   const onClickSwitch = (e, id) => {
+    const copyTodos = [...todoList];
     if (e.target.value === "not") {
-      todoList[id - 1].status = "not";
+      copyTodos[id - 1].status = "not";
     } else if (e.target.value === "start") {
-      todoList[id - 1].status = "start";
+      copyTodos[id - 1].status = "start";
     } else if (e.target.value === "complete") {
-      todoList[id - 1].status = "complete";
+      copyTodos[id - 1].status = "complete";
     }
+    setTodoList(copyTodos);
   };
 
   return (
@@ -103,17 +106,17 @@ export const TodoList = memo((props) => {
       <h2 className="todoListTitle">TODOリスト</h2>
       {radio === "all" ? (
         <ul>
-          {todoList.map((list) => {
+          {todoList.map((list, index) => {
             return (
               <li key={list.id}>
                 <p>
-                  {list.id}:{list.title}
+                  {index + 1}:{list.title}
                 </p>
                 <p>{list.detail}</p>
                 {!todoEdit ? (
                   <>
                     <select
-                      value={todoList.status}
+                      value={list.status}
                       onChange={(e) => onClickSwitch(e, list.id)}
                     >
                       <option value="not">未着手</option>
@@ -145,17 +148,17 @@ export const TodoList = memo((props) => {
         </ul>
       ) : (
         <ul>
-          {filteredTodoList.map((list) => {
+          {filteredTodoList.map((list, index) => {
             return (
               <li key={list.id}>
                 <p>
-                  {list.id}:{list.title}
+                  {index + 1}:{list.title}
                 </p>
                 <p>{list.detail}</p>
                 {!todoEdit ? (
                   <>
                     <select
-                      value={filteredTodoList.status}
+                      value={list.status}
                       onChange={(e) => onClickSwitch(e, list.id)}
                     >
                       <option value="not">未着手</option>
