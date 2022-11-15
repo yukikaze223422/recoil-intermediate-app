@@ -67,9 +67,7 @@ export const TodoList = memo(() => {
           : obj
       )
     );
-    console.log(todoList);
     setFilteredTodoList(todoList);
-    console.log(filteredTodoList);
     const newTodos = filteredTodoList.filter(
       (todo) => todo.status !== e.target.value
     );
