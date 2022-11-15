@@ -1,16 +1,19 @@
 import React, { memo, useState } from "react";
-import "../App.css";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import {
+  todoIdState,
+  todoTitleState,
+  todoDetailState,
+  todoEditState,
+  todoListState,
+} from "../atoms/todoInputState";
 
-export const TodoList = memo((props) => {
-  const {
-    setTodoTitle,
-    setTodoDetail,
-    setTodoId,
-    todoList,
-    setTodoList,
-    todoEdit,
-    setTodoEdit,
-  } = props;
+export const TodoList = memo(() => {
+  const setTodoId = useSetRecoilState(todoIdState);
+  const [todoTitle, setTodoTitle] = useRecoilState(todoTitleState);
+  const [todoDetail, setTodoDetail] = useRecoilState(todoDetailState);
+  const [todoEdit, setTodoEdit] = useRecoilState(todoEditState);
+  const [todoList, setTodoList] = useRecoilState(todoListState);
 
   const [radio, setRadio] = useState("all");
   const [filteredTodoList, setFilteredTodoList] = useState([]);
@@ -50,20 +53,27 @@ export const TodoList = memo((props) => {
     return;
   };
 
-  const onClickSwitch = (e, id) => {
-    const copyTodos = [...todoList];
-    if (e.target.value === "not") {
-      copyTodos[id - 1].status = "not";
-    } else if (e.target.value === "start") {
-      copyTodos[id - 1].status = "start";
-    } else if (e.target.value === "complete") {
-      copyTodos[id - 1].status = "complete";
-    }
+  const onClickSwitch = (e, id, title, detail) => {
+    console.log(e.target.value);
+    setTodoList((prevState) =>
+      prevState.map((obj) =>
+        obj.id === todoList[id - 1].id
+          ? {
+              id: obj.id,
+              title: title,
+              detail: detail,
+              status: e.target.value,
+            }
+          : obj
+      )
+    );
+    console.log(todoList);
+    setFilteredTodoList(todoList);
+    console.log(filteredTodoList);
     const newTodos = filteredTodoList.filter(
       (todo) => todo.status !== e.target.value
     );
     setFilteredTodoList(newTodos);
-    setTodoList(copyTodos);
   };
 
   return (
@@ -121,7 +131,9 @@ export const TodoList = memo((props) => {
                   <>
                     <select
                       value={list.status}
-                      onChange={(e) => onClickSwitch(e, list.id)}
+                      onChange={(e) =>
+                        onClickSwitch(e, list.id, list.title, list.detail)
+                      }
                     >
                       <option value="not">未着手</option>
                       <option value="start">進行中</option>
@@ -169,7 +181,9 @@ export const TodoList = memo((props) => {
                   <>
                     <select
                       value={list.status}
-                      onChange={(e) => onClickSwitch(e, list.id)}
+                      onChange={(e) =>
+                        onClickSwitch(e, list.id, list.title, list.detail)
+                      }
                     >
                       <option value="not">未着手</option>
                       <option value="start">進行中</option>

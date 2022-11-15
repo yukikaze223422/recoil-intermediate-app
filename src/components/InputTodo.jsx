@@ -1,19 +1,20 @@
-import React from "react";
+import React, { memo } from "react";
 import "../App.css";
+import { useRecoilState } from "recoil";
+import {
+  todoIdState,
+  todoTitleState,
+  todoDetailState,
+  todoEditState,
+  todoListState,
+} from "../atoms/todoInputState";
 
-export const InputTodo = (props) => {
-  const {
-    todoId,
-    setTodoId,
-    todoTitle,
-    setTodoTitle,
-    todoDetail,
-    setTodoDetail,
-    todoList,
-    setTodoList,
-    todoEdit,
-    setTodoEdit,
-  } = props;
+export const InputTodo = memo(() => {
+  const [todoId, setTodoId] = useRecoilState(todoIdState);
+  const [todoTitle, setTodoTitle] = useRecoilState(todoTitleState);
+  const [todoDetail, setTodoDetail] = useRecoilState(todoDetailState);
+  const [todoEdit, setTodoEdit] = useRecoilState(todoEditState);
+  const [todoList, setTodoList] = useRecoilState(todoListState);
 
   const handleClickTodo = () => {
     setTodoId(todoId + 1);
@@ -37,11 +38,17 @@ export const InputTodo = (props) => {
     setTodoDetail("");
   };
 
-  const handleClickEditComplete = (id, e) => {
+  const handleClickEditComplete = (id, status, e) => {
     setTodoTitle(e.target.value);
     setTodoDetail(e.target.value);
-    todoList[id - 1].title = todoTitle;
-    todoList[id - 1].detail = todoDetail;
+    //入力した値(タイトル、詳細)に応じてTODOリストを更新
+    setTodoList((prevState) =>
+      prevState.map((obj) =>
+        obj.id === todoList[id - 1].id
+          ? { id: obj.id, title: todoTitle, detail: todoDetail, status: status }
+          : obj
+      )
+    );
     setTodoEdit(!todoEdit);
     setTodoTitle("");
     setTodoDetail("");
@@ -110,7 +117,9 @@ export const InputTodo = (props) => {
             className="submitButton"
             type="button"
             disabled={submitpattern(todoTitle, todoDetail)}
-            onClick={(e) => handleClickEditComplete(todoId, e)}
+            onClick={(e) =>
+              handleClickEditComplete(todoId, todoList[todoId - 1].status, e)
+            }
           >
             決定
           </button>
@@ -121,4 +130,4 @@ export const InputTodo = (props) => {
       )}
     </div>
   );
-};
+});
