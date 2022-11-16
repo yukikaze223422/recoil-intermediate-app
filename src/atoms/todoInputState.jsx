@@ -29,3 +29,8 @@ export const filteredTodoListState = atom({
   key: "filteredTodoListState",
   default: [],
 });
+
+export const radioState = atom({
+  key: "radioState",
+  default: "all",
+});

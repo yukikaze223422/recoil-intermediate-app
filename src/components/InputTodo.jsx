@@ -1,12 +1,14 @@
 import React, { memo } from "react";
 import "../App.css";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import {
   todoIdState,
   todoTitleState,
   todoDetailState,
   todoEditState,
   todoListState,
+  filteredTodoListState,
+  radioState,
 } from "../atoms/todoInputState";
 
 export const InputTodo = memo(() => {
@@ -15,6 +17,8 @@ export const InputTodo = memo(() => {
   const [todoDetail, setTodoDetail] = useRecoilState(todoDetailState);
   const [todoEdit, setTodoEdit] = useRecoilState(todoEditState);
   const [todoList, setTodoList] = useRecoilState(todoListState);
+  const setFilteredTodoList = useSetRecoilState(filteredTodoListState);
+  const radio = useRecoilValue(radioState);
 
   //入力した値（タイトル、詳細）をTODOリストに追加
   const handleClickTodo = () => {
@@ -40,18 +44,30 @@ export const InputTodo = memo(() => {
     setTodoDetail("");
   };
 
-  //選択したリストを変更した値（タイトル、詳細）に更新
-  const handleClickEditComplete = (id, status, e) => {
+  //選択したリストを入力した値（タイトル、詳細）に更新
+  const handleClickEditComplete = (e) => {
     setTodoTitle(e.target.value);
     setTodoDetail(e.target.value);
     //入力した値(タイトル、詳細)に応じてTODOリストを更新
     setTodoList((prevState) =>
-      prevState.map((obj) =>
-        obj.id === todoList[id - 1].id
-          ? { id: obj.id, title: todoTitle, detail: todoDetail, status: status }
+      prevState.map((obj, index) =>
+        obj.id === todoList[index].id
+          ? {
+              id: obj.id,
+              title: todoTitle,
+              detail: todoDetail,
+              status: obj.status,
+            }
           : obj
       )
     );
+    if (radio === "not" && "start" && "complete") {
+      const filterTodo = todoList.filter(
+        (todo, index) => todo.status === todoList[index].status
+      );
+      setFilteredTodoList(filterTodo);
+      console.log("aaa");
+    }
     setTodoEdit(!todoEdit);
     setTodoTitle("");
     setTodoDetail("");
@@ -121,9 +137,7 @@ export const InputTodo = memo(() => {
             className="submitButton"
             type="button"
             disabled={submitpattern(todoTitle, todoDetail)}
-            onClick={(e) =>
-              handleClickEditComplete(todoId, todoList[todoId - 1].status, e)
-            }
+            onClick={(e) => handleClickEditComplete(e)}
           >
             決定
           </button>

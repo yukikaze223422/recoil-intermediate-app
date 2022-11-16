@@ -7,6 +7,7 @@ import {
   todoEditState,
   todoListState,
   filteredTodoListState,
+  radioState,
 } from "../atoms/todoInputState";
 
 export const TodoList = memo(() => {
@@ -18,8 +19,8 @@ export const TodoList = memo(() => {
   const [filteredTodoList, setFilteredTodoList] = useRecoilState(
     filteredTodoListState
   );
+  const [radio, setRadio] = useRecoilState(radioState);
 
-  const [radio, setRadio] = useState("all");
   //const [filteredTodoList, setFilteredTodoList] = useState([]);
 
   //削除ボタンをクリックしたリストを削除
@@ -27,8 +28,8 @@ export const TodoList = memo(() => {
     const copyTodos = [...todoList];
     const newTodos = copyTodos.filter((todo) => id !== todo.id);
     setTodoList(newTodos);
-    if (radio === "not" || "start" || "complete") {
-      const filterTodos = newTodos.filter((todo) => status === todo.status);
+    if (radio === "not" && "start" && "complete") {
+      const filterTodos = todoList.filter((todo) => id !== todo.id);
       setFilteredTodoList(filterTodos);
     }
   };
