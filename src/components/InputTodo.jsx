@@ -16,6 +16,7 @@ export const InputTodo = memo(() => {
   const [todoEdit, setTodoEdit] = useRecoilState(todoEditState);
   const [todoList, setTodoList] = useRecoilState(todoListState);
 
+  //入力した値（タイトル、詳細）をTODOリストに追加
   const handleClickTodo = () => {
     setTodoId(todoId + 1);
     const newTodo = [
@@ -32,12 +33,14 @@ export const InputTodo = memo(() => {
     setTodoDetail("");
   };
 
+  //編集をキャンセル
   const handleClickCancel = () => {
     setTodoEdit(!todoEdit);
     setTodoTitle("");
     setTodoDetail("");
   };
 
+  //選択したリストを変更した値（タイトル、詳細）に更新
   const handleClickEditComplete = (id, status, e) => {
     setTodoTitle(e.target.value);
     setTodoDetail(e.target.value);
@@ -54,6 +57,7 @@ export const InputTodo = memo(() => {
     setTodoDetail("");
   };
 
+  //タイトルと詳細が両方入力された場合のみTRUEで送信クリック可
   const submitpattern = (todoTitle, todoDetail) => {
     if (!todoTitle || !todoDetail) {
       return true;

@@ -10,14 +10,15 @@ import {
 
 export const TodoList = memo(() => {
   const setTodoId = useSetRecoilState(todoIdState);
-  const [todoTitle, setTodoTitle] = useRecoilState(todoTitleState);
-  const [todoDetail, setTodoDetail] = useRecoilState(todoDetailState);
+  const setTodoTitle = useSetRecoilState(todoTitleState);
+  const setTodoDetail = useRecoilState(todoDetailState);
   const [todoEdit, setTodoEdit] = useRecoilState(todoEditState);
   const [todoList, setTodoList] = useRecoilState(todoListState);
 
   const [radio, setRadio] = useState("all");
   const [filteredTodoList, setFilteredTodoList] = useState([]);
 
+  //削除ボタンをクリックしたリストを削除
   const handleClickDelete = (id) => {
     const copyTodos = [...todoList];
     const newTodos = copyTodos.filter((todo) => id !== todo.id);
@@ -25,6 +26,7 @@ export const TodoList = memo(() => {
     setFilteredTodoList(newTodos);
   };
 
+  //編集ボタンをクリックしたリストを任意の値（タイトル、詳細）に編集
   const handleClickEdit = (id, title, detail) => {
     setTodoEdit(!todoEdit);
     setTodoTitle(title);
@@ -32,6 +34,8 @@ export const TodoList = memo(() => {
     setTodoId(id);
   };
 
+  //ラジオボタンによるフィルタリング判定
+  //not=未着手、start=進行中、complete=完了
   const handleChange = (e) => {
     setRadio(e.target.value);
     if (e.target.value === "not") {
@@ -53,8 +57,8 @@ export const TodoList = memo(() => {
     return;
   };
 
+  //プルダウン選択判定
   const onClickSwitch = (e, id, title, detail) => {
-    console.log(e.target.value);
     setTodoList((prevState) =>
       prevState.map((obj) =>
         obj.id === todoList[id - 1].id
