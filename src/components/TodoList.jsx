@@ -6,24 +6,31 @@ import {
   todoDetailState,
   todoEditState,
   todoListState,
+  filteredTodoListState,
 } from "../atoms/todoInputState";
 
 export const TodoList = memo(() => {
   const setTodoId = useSetRecoilState(todoIdState);
   const setTodoTitle = useSetRecoilState(todoTitleState);
-  const setTodoDetail = useRecoilState(todoDetailState);
+  const setTodoDetail = useSetRecoilState(todoDetailState);
   const [todoEdit, setTodoEdit] = useRecoilState(todoEditState);
   const [todoList, setTodoList] = useRecoilState(todoListState);
+  const [filteredTodoList, setFilteredTodoList] = useRecoilState(
+    filteredTodoListState
+  );
 
   const [radio, setRadio] = useState("all");
-  const [filteredTodoList, setFilteredTodoList] = useState([]);
+  //const [filteredTodoList, setFilteredTodoList] = useState([]);
 
   //削除ボタンをクリックしたリストを削除
-  const handleClickDelete = (id) => {
+  const handleClickDelete = (id, status) => {
     const copyTodos = [...todoList];
     const newTodos = copyTodos.filter((todo) => id !== todo.id);
     setTodoList(newTodos);
-    setFilteredTodoList(newTodos);
+    if (radio === "not" || "start" || "complete") {
+      const filterTodos = newTodos.filter((todo) => status === todo.status);
+      setFilteredTodoList(filterTodos);
+    }
   };
 
   //編集ボタンをクリックしたリストを任意の値（タイトル、詳細）に編集
@@ -58,10 +65,10 @@ export const TodoList = memo(() => {
   };
 
   //プルダウン選択判定
-  const onClickSwitch = (e, id, title, detail) => {
+  const onClickSwitchAll = (e, index, title, detail) => {
     setTodoList((prevState) =>
       prevState.map((obj) =>
-        obj.id === todoList[id - 1].id
+        obj.id === todoList[index].id
           ? {
               id: obj.id,
               title: title,
@@ -71,11 +78,10 @@ export const TodoList = memo(() => {
           : obj
       )
     );
-    setFilteredTodoList(todoList);
     const newTodos = filteredTodoList.filter(
       (todo) => todo.status !== e.target.value
     );
-    setFilteredTodoList(newTodos);
+    //setFilteredTodoList(newTodos);
   };
 
   return (
@@ -134,7 +140,7 @@ export const TodoList = memo(() => {
                     <select
                       value={list.status}
                       onChange={(e) =>
-                        onClickSwitch(e, list.id, list.title, list.detail)
+                        onClickSwitchAll(e, index, list.title, list.detail)
                       }
                     >
                       <option value="not">未着手</option>
@@ -152,7 +158,7 @@ export const TodoList = memo(() => {
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleClickDelete(list.id)}
+                      onClick={() => handleClickDelete(list.id, list.status)}
                     >
                       削除
                     </button>
@@ -184,7 +190,7 @@ export const TodoList = memo(() => {
                     <select
                       value={list.status}
                       onChange={(e) =>
-                        onClickSwitch(e, list.id, list.title, list.detail)
+                        onClickSwitchAll(e, index, list.title, list.detail)
                       }
                     >
                       <option value="not">未着手</option>

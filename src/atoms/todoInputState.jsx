@@ -25,12 +25,7 @@ export const todoListState = atom({
   default: [],
 });
 
-export const notSelector = selector({
-  key: "notSelector",
-  get: ({ get }) => {
-    const not = get(todoListState).filter((todo) => {
-      return todo.status === "not";
-    });
-    return not;
-  },
+export const filteredTodoListState = atom({
+  key: "filteredTodoListState",
+  default: [],
 });
